@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11130f">
+  <meta name="description" content="Capital Forge — ontdek tradingtrajecten met aandacht voor structuur, risico en discipline.">
+  <title>Capital Forge — Trade met structuur</title>
+
+  <style>
+    :root {
+      --bg: #11130f;
+      --panel: #191c17;
+      --text: #f3f1e8;
+      --muted: #a7aa9e;
+      --line: rgba(255,255,255,.11);
+      --accent: #c8f078;
+      --max: 1160px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 82% 0%, rgba(200,240,120,.09), transparent 34rem),
+        var(--bg);
+      line-height: 1.65;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-size: .73rem;
+      font-weight: 750;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      width: 23px;
+      height: 1px;
+      background: currentColor;
+      content: "";
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      background: var(--accent);
+      color: #14170f;
+      font-weight: 780;
+      transition: .2s ease;
+      cursor: pointer;
+    }
+    .button:hover { background: #d7ff94; transform: translateY(-2px); }
+    .button.ghost {
+      border-color: var(--line);
+      background: transparent;
+      color: var(--text);
+    }
+    .button.ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .button.small { min-height: 41px; padding-inline: 15px; font-size: .86rem; }
+
+    /* Navigatie */
+    .header {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      background: rgba(17,19,15,.9);
+      backdrop-filter: blur(14px);
+    }
+    .nav {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      font-size: .95rem;
+      font-weight: 850;
+      letter-spacing: .045em;
+      white-space: nowrap;
+    }
+    .brand-mark {
+      display: grid;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      border: 1px solid rgba(200,240,120,.5);
+      border-radius: 8px;
+      color: var(--accent);
+      transform: rotate(-7deg);
+    }
+    .brand em { color: var(--accent); font-style: normal; }
+    .nav-links { display: flex; gap: 25px; color: #c3c5bc; font-size: .87rem; }
+    .nav-links a:hover, .footer-links a:hover { color: var(--accent); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .menu-button {
+      display: none;
+      width: 42px;
+      height: 41px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero { padding: 88px 0 75px; overflow: hidden; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      align-items: center;
+      gap: 48px;
+    }
+    h1 {
+      max-width: 720px;
+      margin: 18px 0;
+      font-size: clamp(3.2rem, 6.4vw, 5.7rem);
+      line-height: .98;
+      letter-spacing: -.075em;
+      font-weight: 730;
+    }
+    h1 span { color: var(--accent); }
+    .hero-copy > p { max-width: 560px; color: #b6b9af; font-size: 1.06rem; }
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .hero-note { display: flex; align-items: center; gap: 10px; margin-top: 22px; color: var(--muted); font-size: .82rem; }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 13px var(--accent);
+    }
+
+    .visual { position: relative; min-height: 390px; display: grid; place-items: center; isolation: isolate; }
+    .visual::before, .visual::after {
+      position: absolute;
+      z-index: -1;
+      border: 1px solid rgba(200,240,120,.15);
+      border-radius: 50%;
+      content: "";
+    }
+    .visual::before { width: 320px; height: 320px; box-shadow: 0 0 100px rgba(200,240,120,.08); }
+    .visual::after { width: 430px; height: 430px; border-color: rgba(255,255,255,.05); }
+    .insight-card {
+      width: min(100%, 430px);
+      padding: 25px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: linear-gradient(145deg, #24291f, #171a15);
+      box-shadow: 0 28px 80px rgba(0,0,0,.4);
+      transform: rotate(1.5deg);
+    }
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .card-kicker { color: var(--muted); font-size: .72rem; letter-spacing: .08em; }
+    .card-tag { padding: 5px 9px; border: 1px solid rgba(200,240,120,.3); border-radius: 20px; color: var(--accent); font-size: .68rem; }
+    .insight-card h2 { margin: 18px 0 5px; font-size: 1.4rem; letter-spacing: -.04em; }
+    .insight-card > p { margin: 0; color: var(--muted); font-size: .84rem; }
+    .chart { width: 100%; height: 145px; margin: 12px 0; }
+    .chart-grid line { stroke: rgba(255,255,255,.08); }
+    .chart-area { fill: url(#area); opacity: .35; }
+    .chart-path { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .card-bottom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-top: 15px; border-top: 1px solid var(--line); }
+    .card-bottom strong { display: block; font-size: .83rem; }
+    .card-bottom span { color: var(--muted); font-size: .68rem; }
+    .floating-label {
+      position: absolute;
+      right: -3px;
+      bottom: 20px;
+      padding: 12px 15px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel);
+      font-size: .78rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    }
+    .floating-label b { color: var(--accent); }
+
+    /* Algemene secties */
+    section { scroll-margin-top: 88px; }
+    .section { padding: 78px 0; }
+    .section-heading { max-width: 680px; margin-bottom: 32px; }
+    .section-heading h2 {
+      margin: 12px 0;
+      font-size: clamp(2.1rem, 4vw, 3.35rem);
+      line-height: 1.07;
+      letter-spacing: -.06em;
+    }
+    .section-heading p { max-width: 590px; margin: 0; color: var(--muted); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(145deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+    }
+
+    /* Aanpak */
+    .approach-card { min-height: 210px; padding: 23px; }
+    .number {
+      display: grid;
+      width: 39px;
+      height: 39px;
+      place-items: center;
+      border: 1px solid rgba(200,240,120,.38);
+      border-radius: 7px;
+      color: var(--accent);
+      font-size: .81rem;
+      font-weight: 800;
+    }
+    .approach-card h3, .value-card h3 { margin: 19px 0 7px; font-size: 1.08rem; }
+    .approach-card p, .value-card p { margin: 0; color: var(--muted); font-size: .89rem; }
+
+    .method-section { background: linear-gradient(180deg, transparent, rgba(255,255,255,.025), transparent); }
+    .method-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 48px; align-items: start; }
+    .method-list { border-top: 1px solid var(--line); }
+    .method-item { display: grid; grid-template-columns: 44px 1fr; gap: 14px; padding: 19px 0; border-bottom: 1px solid var(--line); }
+    .method-item .number { width: 34px; height: 34px; }
+    .method-item h3 { margin: 0 0 5px; font-size: .98rem; }
+    .method-item p { margin: 0; color: var(--muted); font-size: .86rem; }
+
+    /* Prijspakketten */
+    .price-card { position: relative; padding: 24px; }
+    .price-card h3 { margin: 0 0 7px; font-size: 1.2rem; }
+    .price-card > p { min-height: 48px; margin: 0; color: var(--muted); font-size: .87rem; }
+    .price { margin: 20px 0; font-size: 2rem; font-weight: 780; letter-spacing: -.05em; }
+    .price small { color: var(--muted); font-size: .75rem; font-weight: 450; letter-spacing: 0; }
+    .price-card ul { display: grid; gap: 10px; margin: 0 0 22px; padding: 0; list-style: none; color: #c7c9c1; font-size: .85rem; }
+    .price-card li::before { content: "✓"; margin-right: 9px; color: var(--accent); font-weight: 800; }
+    .price-card .button { width: 100%; }
+    .price-card.highlight {
+      border-color: rgba(200,240,120,.46);
+      background: linear-gradient(145deg, rgba(200,240,120,.09), rgba(255,255,255,.015));
+    }
+    .badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      color: var(--accent);
+      font-size: .67rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .price-note { margin: 16px 0 0; color: var(--muted); font-size: .77rem; }
+
+    /* Handelsprincipes */
+    .rules { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .rule { display: flex; gap: 14px; padding: 18px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,.02); }
+    .rule-icon { color: var(--accent); font-size: 1.1rem; }
+    .rule h3 { margin: 0 0 4px; font-size: .93rem; }
+    .rule p { margin: 0; color: var(--muted); font-size: .82rem; }
+
+    .value-card { padding: 22px; }
+    .value-icon { color: var(--accent); font-size: 1.3rem; }
+
+    /* Contact */
+    .cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      padding: 35px;
+      border: 1px solid rgba(200,240,120,.27);
+      border-radius: 9px;
+      background: radial-gradient(ellipse at 90% 50%, rgba(200,240,120,.12), transparent 40%), var(--panel);
+    }
+    .cta h2 { max-width: 620px; margin: 10px 0 7px; font-size: clamp(1.9rem, 3.5vw, 2.8rem); line-height: 1.08; letter-spacing: -.055em; }
+    .cta p { margin: 0; color: var(--muted); }
+
+    /* FAQ en footer */
+    .faq { max-width: 850px; border-top: 1px solid var(--line); }
+    details { border-bottom: 1px solid var(--line); }
+    summary { display: flex; justify-content: space-between; gap: 20px; padding: 19px 2px; font-weight: 650; cursor: pointer; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--accent); font-size: 1.25rem; }
+    details[open] summary::after { content: "−"; }
+    details p { max-width: 740px; margin: -3px 0 20px; color: var(--muted); font-size: .89rem; }
+
+    footer { padding: 28px 0 25px; border-top: 1px solid var(--line); }
+    .footer-top { display: flex; align-items: center; justify-content: space-between; gap: 25px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 18px; color: var(--muted); font-size: .8rem; }
+    .disclaimer { max-width: 930px; margin: 22px 0 0; color: #85897f; font-size: .71rem; }
+    .footer-small { margin-top: 12px; color: #73776e; font-size: .68rem; }
+
+    @media (max-width: 860px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 73px;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        border-bottom: 1px solid var(--line);
+        background: #131510;
+      }
+      .nav-links.open { display: grid; gap: 17px; }
+      .menu-button { display: grid; place-items: center; }
+      .nav-actions .ghost { display: none; }
+      .hero { padding: 65px 0 42px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 10px; }
+      .visual { min-height: 350px; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .approach-card { min-height: auto; }
+      .method-grid { grid-template-columns: 1fr; gap: 24px; }
+      .cta { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(var(--max), calc(100% - 30px)); }
+      .nav { min-height: 67px; }
+      .nav-links { top: 66px; }
+      .nav-actions > .button { min-height: 38px; padding-inline: 11px; font-size: .75rem; }
+      h1 { font-size: clamp(2.8rem, 14vw, 4.2rem); }
+      .hero-copy > p { font-size: .98rem; }
+      .visual { min-height: 320px; }
+      .insight-card { padding: 18px; }
+      .floating-label { right: 0; bottom: 2px; }
+      .section { padding: 62px 0; }
+      .rules { grid-template-columns: 1fr; }
+      .cta { padding: 24px; }
+      .footer-top { align-items: flex-start; flex-direction: column; }
+      .footer-links { gap: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <nav class="nav wrap" aria-label="Hoofdnavigatie">
+      <a class="brand" href="#home" aria-label="Capital Forge homepage">
+        <span class="brand-mark" aria-hidden="true">◆</span>
+        <span>CAPITAL <em>FORGE</em></span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#aanpak">Aanpak</a>
+        <a href="#aanbod">Prijzen</a>
+        <a href="#principes">Handelsprincipes</a>
+        <a href="#faq">FAQ</a>
+      </div>
+
+      <div class="nav-actions">
+        <a class="button ghost small" href="#aanpak">Ontdek de aanpak</a>
+        <a class="button small" href="#aanbod">Bekijk prijzen <span>↗</span></a>
+        <button class="menu-button" id="menuToggle" aria-label="Menu openen" aria-expanded="false" aria-controls="navLinks">☰</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-grid wrap">
+        <div class="hero-copy">
+          <span class="eyebrow">Inzicht boven impuls</span>
+          <h1>Begrijp de markt.<br><span>Versterk je aanpak.</span></h1>
+          <p>
+            Trading vraagt om meer dan een blik op de grafiek. Ontwikkel een doordacht
+            proces met aandacht voor marktcontext, risico en consistente besluitvorming.
+          </p>
+          <div class="hero-buttons">
+            <a class="button" href="#aanpak">Ontdek onze aanpak <span>↗</span></a>
+            <a class="button ghost" href="#aanbod">Bekijk pakketten <span>↓</span></a>
+          </div>
+          <div class="hero-note"><span class="status-dot"></span> Geen belofte van winst of gegarandeerde resultaten.</div>
+        </div>
+
+        <div class="visual" aria-label="Decoratieve marktgrafiek">
+          <div class="insight-card">
+            <div class="card-top">
+              <span class="card-kicker">CAPITAL FORGE · MARKTCONTEXT</span>
+              <span class="card-tag">PROCES EERST</span>
+            </div>
+            <h2>Een trade is onderdeel van een groter geheel.</h2>
+            <p>Context · plan · risico · evaluatie</p>
+            <svg class="chart" viewBox="0 0 400 150" role="img" aria-label="Decoratieve marktlijn">
+              <defs>
+                <linearGradient id="area" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#c8f078"/>
+                  <stop offset="100%" stop-color="#c8f078" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <g class="chart-grid">
+                <line x1="0" y1="25" x2="400" y2="25"/>
+                <line x1="0" y1="65" x2="400" y2="65"/>
+                <line x1="0" y1="105" x2="400" y2="105"/>
+                <line x1="0" y1="145" x2="400" y2="145"/>
+              </g>
+              <path class="chart-area" d="M0 119 35 108 68 114 105 78 143 89 177 60 212 72 246 43 282 57 320 31 353 42 400 13 400 150 0 150Z"/>
+              <path class="chart-path" d="M0 119 35 108 68 114 105 78 143 89 177 60 212 72 246 43 282 57 320 31 353 42 400 13"/>
+            </svg>
+            <div class="card-bottom">
+              <div><strong>Context</strong><span>Lees de omgeving</span></div>
+              <div><strong>Risico</strong><span>Ken je grenzen</span></div>
+              <div><strong>Reflectie</strong><span>Leer van keuzes</span></div>
+            </div>
+          </div>
+          <div class="floating-label"><b>01</b> · Eerst begrijpen, dan handelen</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="aanpak">
+      <div class="wrap">
+        <div class="section-heading">
+          <span class="eyebrow">Een bredere blik</span>
+          <h2>De markt is meer dan één grafiek.</h2>
+          <p>
+            Leer meerdere invalshoeken mee te nemen, vragen te stellen en handelsideeën
+            in context te plaatsen.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="panel approach-card">
+            <span class="number">01</span>
+            <h3>Marktstructuur</h3>
+            <p>Bestudeer prijsbewegingen, belangrijke niveaus en mogelijke scenario’s, zonder één uitkomst als zeker te zien.</p>
+          </article>
+          <article class="panel approach-card">
+            <span class="number">02</span>
+            <h3>Context en kosten</h3>
+            <p>Houd rekening met marktomstandigheden en handelskosten zoals spread, commissie en slippage.</p>
+          </article>
+          <article class="panel approach-card">
+            <span class="number">03</span>
+            <h3>Plan en reflectie</h3>
+            <p>Leg je uitgangspunten vast en evalueer achteraf je proces, niet alleen het resultaat.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section method-section">
+      <div class="wrap method-grid">
+        <div class="section-heading">
+          <span class="eyebrow">Van inzicht naar routine</span>
+          <h2>Een helder leerproces.</h2>
+          <p>
+            Een structuur om kennis op te bouwen, beslissingen te onderbouwen
+            en lessen uit ervaring te halen. Resultaten blijven onzeker.
+          </p>
+        </div>
+
+        <div class="method-list">
+          <article class="method-item">
+            <span class="number">01</span>
+            <div>
+              <h3>Breng je uitgangspunt in kaart</h3>
+              <p>Bespreek je ervaring, doelen en vragen voordat je een passend traject kiest.</p>
+            </div>
+          </article>
+          <article class="method-item">
+            <span class="number">02</span>
+            <div>
+              <h3>Leer met context</h3>
+              <p>Bestudeer marktstructuur, relevante factoren en de kosten en risico’s van handelen.</p>
+            </div>
+          </article>
+          <article class="method-item">
+            <span class="number">03</span>
+            <div>
+              <h3>Oefen en documenteer</h3>
+              <p>Werk met een plan en houd bij waarom je een beslissing neemt.</p>
+            </div>
+          </article>
+          <article class="method-item">
+            <span class="number">04</span>
+            <div>
+              <h3>Evalueer en stel bij</h3>
+              <p>Gebruik reflectie om je aanpak te verbeteren; winst is niet gegarandeerd.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="aanbod">
+      <div class="wrap">
+        <div class="section-heading">
+          <span class="eyebrow">Voorbeeldprijzen</span>
+          <h2>Kies een startpunt.</h2>
+          <p>
+            Deze voorbeeldpakketten zijn bedoeld als concept voor de homepage.
+            Ze zijn geen officiële FTMO-prijzen of bevestigd Capital Forge-aanbod.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="panel price-card">
+            <h3>Starter</h3>
+            <p>Een eerste kennismaking met een gestructureerd evaluatietraject.</p>
+            <div class="price">€89 <small>eenmalig · voorbeeldprijs</small></div>
+            <ul>
+              <li>Voorbeeldtraject voor beginners</li>
+              <li>Digitale onboarding</li>
+              <li>Uitleg van conceptregels</li>
+              <li>Risico- en procesinformatie</li>
+            </ul>
+            <a class="button ghost" href="#contact">Meer informatie</a>
+          </article>
+
+          <article class="panel price-card highlight">
+            <span class="badge">Populaire keuze</span>
+            <h3>Pro</h3>
+            <p>Een uitgebreider voorbeeldtraject met extra evaluatiemomenten.</p>
+            <div class="price">€179 <small>eenmalig · voorbeeldprijs</small></div>
+            <ul>
+              <li>Uitgebreider evaluatietraject</li>
+              <li>Extra voortgangsmoment</li>
+              <li>Uitleg van conceptregels</li>
+              <li>Proces- en risico-informatie</li>
+            </ul>
+            <a class="button" href="#contact">Meer informatie <span>↗</span></a>
+          </article>
+
+          <article class="panel price-card">
+            <h3>Elite</h3>
+            <p>Een premium voorbeeldpakket voor een uitgebreider leertraject.</p>
+            <div class="price">€349 <small>eenmalig · voorbeeldprijs</small></div>
+            <ul>
+              <li>Uitgebreide evaluatie-opzet</li>
+              <li>Extra leer- en reflectiemateriaal</li>
+              <li>Uitleg van conceptregels</li>
+              <li>Prioriteitscontact als beschikbaar</li>
+            </ul>
+            <a class="button ghost" href="#contact">Meer informatie</a>
+          </article>
+        </div>
+
+        <p class="price-note">
+          Alle genoemde bedragen en pakketonderdelen zijn voorbeelden, geen aanbod. Bevestig de echte prijzen,
+          inhoud, belastingen, voorwaarden en eventuele terugbetalingsregels voordat je de website publiceert.
+        </p>
+      </div>
+    </section>
+
+    <section class="section method-section" id="principes">
+      <div class="wrap">
+        <div class="section-heading">
+          <span class="eyebrow">Risico bewust benaderen</span>
+          <h2>Belangrijke handelsprincipes.</h2>
+          <p>Dit zijn algemene aandachtspunten, geen definitieve challenge-regels of financieel advies.</p>
+        </div>
+
+        <div class="rules">
+          <article class="rule">
+            <span class="rule-icon" aria-hidden="true">◎</span>
+            <div>
+              <h3>Ken de kosten</h3>
+              <p>Houd rekening met spread, commissie, financiering en slippage. Kosten verschillen per product en aanbieder.</p>
+            </div>
+          </article>
+          <article class="rule">
+            <span class="rule-icon" aria-hidden="true">◇</span>
+            <div>
+              <h3>Begrijp het risico</h3>
+              <p>Je kunt geld verliezen. Gebruik geen geld dat je niet kunt missen en handel alleen als je de risico’s begrijpt.</p>
+            </div>
+          </article>
+          <article class="rule">
+            <span class="rule-icon" aria-hidden="true">↗</span>
+            <div>
+              <h3>Werk volgens een plan</h3>
+              <p>Leg je beslissingen en aannames vast. Een plan neemt onzekerheid niet weg en garandeert geen resultaat.</p>
+            </div>
+          </article>
+          <article class="rule">
+            <span class="rule-icon" aria-hidden="true">＋</span>
+            <div>
+              <h3>Controleer de voorwaarden</h3>
+              <p>Bekijk vóór deelname de actuele kosten, inhoud, annuleringsregels en eventuele productvoorwaarden.</p>
+            </div>
+          </article>
+        </div>
+
+        <p class="price-note">
+          Er zijn geen officiële Capital Forge-regels aangeleverd. Challenge-doelen, verlieslimieten,
+          uitbetalingsregels en andere voorwaarden moeten nog worden vastgesteld.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-heading">
+          <span class="eyebrow">Waar Capital Forge voor staat</span>
+          <h2>Meer inzicht. Eerlijke verwachtingen.</h2>
+        </div>
+
+        <div class="grid-3">
+          <article class="panel value-card">
+            <span class="value-icon" aria-hidden="true">⌁</span>
+            <h3>Context boven hype</h3>
+            <p>Nadruk op leren en analyseren, niet op spectaculaire claims of gegarandeerde resultaten.</p>
+          </article>
+          <article class="panel value-card">
+            <span class="value-icon" aria-hidden="true">◇</span>
+            <h3>Transparant vooraf</h3>
+            <p>Maak inhoud, kosten en voorwaarden inzichtelijk voordat iemand een besluit neemt.</p>
+          </article>
+          <article class="panel value-card">
+            <span class="value-icon" aria-hidden="true">↗</span>
+            <h3>Ruimte voor vragen</h3>
+            <p>Bespreek verwachtingen en kijk of het aanbod aansluit bij wat iemand zoekt.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <span class="eyebrow">Begin met helderheid</span>
+            <h2>Bespreek wat bij je past.</h2>
+            <p>Vraag naar het actuele aanbod, de echte kosten en alle voorwaarden voordat je beslist.</p>
+          </div>
+          <a class="button" href="mailto:VUL-JE-EMAIL-IN">Neem contact op <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="wrap">
+        <div class="section-heading">
+          <span class="eyebrow">Veelgestelde vragen</span>
+          <h2>Goed om vooraf te weten.</h2>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>Zijn dit officiële FTMO-prijzen?</summary>
+            <p>Nee. De bedragen op deze conceptpagina zijn voorbeeldprijzen voor Capital Forge. Het zijn geen officiële FTMO-tarieven.</p>
+          </details>
+          <details>
+            <summary>Zijn de Capital Forge-pakketten al beschikbaar?</summary>
+            <p>De pakketten en inhoud op deze pagina zijn concepten. Bevestig eerst wat je daadwerkelijk aanbiedt voordat je de website publiceert.</p>
+          </details>
+          <details>
+            <summary>Zijn de genoemde prijzen definitief?</summary>
+            <p>Nee. €89, €179 en €349 zijn illustratieve bedragen. Controleer en vervang ze door je echte tarieven en vermeld eventuele bijkomende kosten.</p>
+          </details>
+          <details>
+            <summary>Zijn winst of succesvolle resultaten gegarandeerd?</summary>
+            <p>Nee. Trading brengt risico op verlies met zich mee. Educatie of begeleiding garandeert geen winst, financiering of succesvolle handelsresultaten.</p>
+          </details>
+          <details>
+            <summary>Zijn dit de officiële handelsregels?</summary>
+            <p>Nee. Er zijn geen definitieve Capital Forge-regels aangeleverd. Publiceer specifieke targets, limieten of uitbetalingsvoorwaarden pas nadat ze zijn vastgesteld.</p>
+          </details>
+          <details>
+            <summary>Is deze pagina financieel advies?</summary>
+            <p>Nee. Dit is een websiteconcept en geen financieel advies. Laat de juridische informatie toetsen aan je werkelijke aanbod en vestigingsland.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="#home" aria-label="Capital Forge homepage">
+          <span class="brand-mark" aria-hidden="true">◆</span>
+          <span>CAPITAL <em>FORGE</em></span>
+        </a>
+        <div class="footer-links">
+          <a href="#aanpak">Aanpak</a>
+          <a href="#aanbod">Prijzen</a>
+          <a href="#principes">Principes</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+
+      <p class="disclaimer">
+        Risicowaarschuwing: handelen in financiële instrumenten brengt risico’s met zich mee en kan leiden
+        tot verlies van je inleg. Resultaten uit het verleden bieden geen garantie voor de toekomst.
+        Deze pagina is geen financieel advies. Pakketnamen, prijzen en inhoud zijn voorbeeldmateriaal.
+      </p>
+      <p class="footer-small">
+        Vervang de voorbeeldcontactgegevens, bevestig je aanbod en tarieven en laat voorwaarden,
+        privacyinformatie en juridische teksten controleren voordat je de site publiceert.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.querySelector("#menuToggle");
+    const navLinks = document.querySelector("#navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "Menu sluiten" : "Menu openen");
+      menuToggle.textContent = isOpen ? "×" : "☰";
+    });
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Menu openen");
+        menuToggle.textContent = "☰";
+      });
+    });
+  </script>
+</body>
+</html>
